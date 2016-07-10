@@ -18,9 +18,9 @@ public class HashTable<T>{
 			if(output.head == null){
 				return null;
 			}else if(output.head.next != null){
-				System.out.printf("Multiple values detected at %s, "
+				System.out.printf("Multiple values detected at key resolution: %s, "
 						+ " please specify the data you wish to retrieve"
-						+ " USAGE: 'get(key, data)\n", key);
+						+ " USAGE: 'get(key, data)\n",( key%listMod));
 				return null;
 			}else{
 				return output.head.data;
@@ -48,6 +48,8 @@ public class HashTable<T>{
 	}
 	
 	public void add(int key, T data){
+		if(hashList[key%listMod] == null)
+			hashList[key%listMod] = new List<T>();
 		hashList[key%listMod].add(key, data);
 	}
 	
@@ -60,11 +62,40 @@ public class HashTable<T>{
 		listMod = hashList.length;
 	}
 	
+	//Doubles the size of the hash table when called
+	@SuppressWarnings("unchecked")
+	public void grow(){
+		List<T>[] tempList = (List<T>[]) new List[(hashList.length * 2)];
+		int i ;
+		for( i = 0; i < hashList.length; i++){
+			tempList[i] = new List<T>();
+			if(hashList[i] != null){
+				List.Node<T> tempNode = (List.Node<T>) hashList[i].head;
+				if(tempNode != null){
+					while(tempNode.data != null){
+						if(tempList[tempNode.key%tempList.length] == null)
+							tempList[tempNode.key%tempList.length] = new List<T>();
+						tempList[tempNode.key%tempList.length].add(tempNode.data);
+						if(tempNode.next != null)
+							tempNode = (List.Node<T>) tempNode.next;
+						else 
+							tempNode.data = null;
+					}
+					tempNode = null;
+				}
+			}
+		}
+		hashList = tempList;
+		updateListMod();
+	}
+	
 	public void printTable(){
 		for(int i = 0; i < hashList.length; i++){
 			if(hashList[i] != null){
 				if(hashList[i].head != null) System.out.printf("%s: ", i);
 				hashList[i].printList();
+			}else{
+				hashList[i] = new List<T>();
 			}
 		}
 	}

@@ -151,11 +151,12 @@ public class TestClass {
 	}
 	
 	public void testHashTable(){
-		HashTable<String> myHash = new HashTable<String>(30);
+		HashTable<String> myHash = new HashTable<String>(15);
 		
 		myHash.add(3, "Barbara Buchanan");
 		myHash.add(77, "Susan Sarandon");
-		myHash.add(28, "Alan Alda");
+		myHash.add(30, "Alan Alda");
+		myHash.add(60, "Helen Hunt");
 		myHash.add(83, "David Duchovney");
 		myHash.add(23, "Keira Knightly");
 		
@@ -185,6 +186,9 @@ public class TestClass {
 		else
 			System.out.println("remove() unsuccessful");
 		
+		myHash.printTable();
+		myHash.grow();
+		System.out.println("After grow(): ");
 		myHash.printTable();
 	}
 	
