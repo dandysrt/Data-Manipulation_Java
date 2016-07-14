@@ -104,6 +104,7 @@ public class HashTable<T>{
 	
 	
 	public static class List<T> extends LinkedList<T>{
+		//TODO: global list length tracking to allow dynamic grow() operation
 		public void add(int key, T data){
 			if(super.head == null){
 				super.head = new Node<T>(null, key, data, (Node<T>)super.tail);
